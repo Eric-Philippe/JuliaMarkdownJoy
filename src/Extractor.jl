@@ -71,7 +71,7 @@ function extract_from_title(self::ExtractorManager, named, take_everything_after
     _content = self.json_md_parsed["_content"]
     index = findfirst(i -> startswith(i["type"], "h") && i["content"] in named, _content)
 
-    if index == 0 return "NOT_FOUND" end
+    if index === nothing return "NOT_FOUND" end
 
     content = []
     i = index + 1
