@@ -1,0 +1,58 @@
+{
+  "fields": [
+    {
+      "find_property_": "title",
+      "after_a_": "title",
+      "named_": ["Titre", "Title"]
+    },
+    {
+      "find_property_": "shortDesc",
+      "after_a_": "title",
+      "named_": ["Résumé", "Aperçu", "Intro", "Introduction", "Présentation"]
+    },
+    {
+      "find_property_": "techs",
+      "after_a_": "table_headers",
+      "named_": ["Technologies", "Technos", "Techs", "Tools"]
+    },
+    {
+      "find_property_": "gitLink",
+      "after_a_": "link",
+      "named_": ["Lien GitHub", "Lien Git", "Lien vers Git"]
+    },
+    {
+      "find_property_": "date",
+      "after_a_": "title",
+      "named_": ["Date", "Création", "Créé", "Créé le", "Date de création"]
+    },
+    {
+      "find_property_": "tag",
+      "after_a_": "title",
+      "named_": ["Tag", "Tags", "Catégorie"],
+      "format": "uppercase"
+    },
+    {
+      "find_property_": "previewImg",
+      "after_a_": "image",
+      "named_": [
+        "Image",
+        "Image de prévisualisation",
+        "Image de preview",
+        "Preview",
+        "Preview image"
+      ]
+    },
+    {
+      "find_property_": "content",
+      "after_a_": "title",
+      "named_": [
+        "Contenu",
+        "Contenu du projet",
+        "Description",
+        "Description du projet"
+      ],
+      "take_everything_after_": true,
+      "format": "html"
+    }
+  ]
+}

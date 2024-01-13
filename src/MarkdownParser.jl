@@ -20,7 +20,7 @@ function add_to_json(parser::Parser, type::String, content::Any)
     push!(parser.json_content["_content"], Dict("type" => type, "content" => content))
 end
 
-function parse(parser::Parser)
+function parse(parser::Parser) :: Dict{String, Any}
     lines = split(parser.md_content, "\n")
     index = 1
     while index <= length(lines)
@@ -132,5 +132,6 @@ end
 
 export Parser
 export parse
+export TYPES
 
 end
