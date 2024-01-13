@@ -103,7 +103,8 @@ function getFiles(input::String)
     if endswith(input, "/")
         files = readdir(input)
         files = filter(x -> endswith(x, ".md"), files)
-        files = sort(files, by = x -> searchindex(input, x))
+        # Remove the one that start with a _
+        files = filter(x -> !startswith(x, "_"), files)
         return map(x -> input * x, files)
     else
         return [input]
