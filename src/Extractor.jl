@@ -1,5 +1,8 @@
 module Extractor
 
+include("HtmlConverter.jl")
+import .HtmlConverter: html_convert
+
 SEARCH_FIELDS = ["title", "link", "image"]
 FORMAT = ["uppercase", "array"]
 # a take_everything_after_ will auto format to html, also the only way to keep the alt from the images
@@ -18,12 +21,10 @@ conf: Dict{String, Any} - The config that tells us what to extract
 
 """
 struct ExtractorManager
-    json_md_parsed::Dict{String, Any}
-    conf::Dict{String, Any}
+    json_md_parsed
+    conf
 
-    function ExtractorManager(json_md_parsed::Dict{String, Any}, conf::Dict{String, Any})
-        new(json_md_parsed, conf)
-    end
+    ExtractorManager(json_md_parsed, conf) = new(json_md_parsed, conf)
 end
 
 """
@@ -35,7 +36,7 @@ extract(extractor)
 Extract the content from the markdown file using the config.
 """
 function extract(self::ExtractorManager)
-    fields = self.conf["fields"]
+    fields = self.conf
     final_content = Dict()
     for field in fields
         final_content[field["find_property_"]] = extract_from_field(self, field)
@@ -63,8 +64,9 @@ function extract_from_field(self::ExtractorManager, field::Dict{String, Any})
     end
 end
 
-function extract_from_title(self::ExtractorManager, named::Vector{Any}, take_everything_after_::Bool, format::Union{String, Nothing})
+function extract_from_title(self::ExtractorManager, named, take_everything_after_::Bool, format::Union{String, Nothing})
     if format == "array" return extract_table_from_title(self, named, take_everything_after_, format) end
+    if take_everything_after_ return extract_everything_after_title(self, named, format) end
 
     _content = self.json_md_parsed["_content"]
     index = findfirst(i -> startswith(i["type"], "h") && i["content"] in named, _content)
@@ -98,6 +100,21 @@ function extract_table_from_title(self::ExtractorManager, named::Vector{Any}, ta
     end
     
     return isempty(content) ? "EMPTY" : content
+end
+
+function extract_everything_after_title(self::ExtractorManager, named::Vector{Any}, format::Union{String, Nothing})
+    _content = self.json_md_parsed["_content"]
+    index = findfirst(i -> startswith(i["type"], "h") && i["content"] in named, _content)
+    if index == 0 return "NOT_FOUND" end
+
+    content = []
+    i = index + 1
+    while i <= length(_content)
+        push!(content, _content[i])
+        i += 1
+    end
+
+    return isempty(content) ? "EMPTY" : html_convert(content)
 end
 
 """

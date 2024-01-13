@@ -38,7 +38,7 @@ function write_json_file(filename, json_content)
     end
 end
 
-function read_json_config_file(filename)
+function read_json_config_file(filename)::Vector{Dict{String, Any}}
     # If the filename does't end with .json, throw an error
     if !endswith(filename, ".json")
         error("The file must be a json file (.json)")
@@ -57,7 +57,7 @@ function read_json_config_file(filename)
     # Read the file
     json_content = JSON.parsefile(filename)
 
-    return json_content
+    return json_content["fields"]
 end
 
 function check_json_config_validity(json_content)

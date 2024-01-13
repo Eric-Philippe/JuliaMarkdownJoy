@@ -2,6 +2,9 @@ module MarkdownParser
 
 import JSON
 
+include("ReaderWriter.jl")
+import .ReaderWriter: read_markdown_file, write_json_file, read_json_config_file
+
 TYPES = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "quote", "separator", "table_headers", "table_row", "code_block", "list", "link", "image"]
 
 mutable struct Parser
@@ -18,6 +21,17 @@ end
 
 function add_to_json(parser::Parser, type::String, content::Any)
     push!(parser.json_content["_content"], Dict("type" => type, "content" => content))
+end
+
+# Function to parse the markdown files
+function parseFiles(files::Array{String,1})
+    parsed_array = []
+    for file in files
+        mdParser = Parser(read_markdown_file(file))
+        json = parse(mdParser)
+        push!(parsed_array, json)
+    end
+    return parsed_array
 end
 
 function parse(parser::Parser) :: Dict{String, Any}
@@ -117,22 +131,9 @@ function parse_image(parser::Parser, line::String)
     add_to_json(parser, "image", split(line[3:end-1], "]("))
 end
 
-# Get the content of the test.md file
-# md_content = read("test.md", String)
-
-# # Parse the content
-# parser = Parser(md_content)
-# json_content = parse(parser)
-
-# println(json_content)
-
-# # Save the parsed content to a JSON file
-# open("testJulia.json", "w") do f
-#     JSON.print(f, json_content)
-# end
-
 export Parser
 export parse
+export parseFiles
 export TYPES
 
 end
