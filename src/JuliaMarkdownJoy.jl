@@ -103,6 +103,7 @@ function getFiles(input::String)
     if endswith(input, "/")
         files = readdir(input)
         files = filter(x -> endswith(x, ".md"), files)
+        files = sort(files)
         return map(x -> input * x, files)
     else
         return [input]
