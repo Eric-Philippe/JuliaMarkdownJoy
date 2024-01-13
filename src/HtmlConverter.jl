@@ -11,7 +11,7 @@ function html_convert(parsed_array::Vector{Any})
         if type == "p"
             html_content *= get_paragraph_html(parsed["content"])
         elseif startswith(type, "h")
-            html_content *= get_title_html(parsed["type"], parsed["content"])
+            html_content *= get_title_html(String(parsed["type"]), String(parsed["content"]))
         elseif type == "separator"
             html_content *= "<hr>"
         elseif type == "image"
