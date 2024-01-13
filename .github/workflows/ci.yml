@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - dev
-
+    branches: [main]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -24,23 +22,3 @@ jobs:
       - name: Run tests
         run: |
           julia --project=@. -e 'using Pkg; Pkg.test()'
-
-  merge:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: dev
-
-      - name: Configure Git
-        run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-      - name: Merge to main
-        run: |
-          git checkout main
-          git merge --no-ff dev
-          git push origin main
