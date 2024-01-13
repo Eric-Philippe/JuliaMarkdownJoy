@@ -52,9 +52,9 @@ function parse(parser::Parser) :: Dict{String, Any}
                 index += 1
             end
             index -= 1
-        elseif occursin(r"\[.*\]\(http.*\)", line)
+        elseif occursin(r"\[.*\]\(http.*\)", line) && !startswith(line, "!")
             parse_link(parser, String(line))
-        elseif occursin(r"\!\[.*\]\(.*\)", line)
+        elseif occursin(r"!\[.*\]\(.*\)", line)
             parse_image(parser, String(line))
         elseif startswith(line, "---")
             add_to_json(parser, "separator", "")
@@ -90,8 +90,9 @@ function parse_quote(parser::Parser, quote_lines::Array{String,1})
 end
 
 function parse_table(parser::Parser, lines::Array{String,1})
-    headers = strip.(split(lines[1], "|")[2:end-1])
-    add_to_json(parser, "table_headers", headers)
+    # headers = strip.(split(lines[1], "|")[2:end-1])
+    # add_to_json(parser, "table_headers", headers)
+
     for line in lines[3:end - 1]
         row = strip.(split(line, "|")[2:end-1])
         add_to_json(parser, "table_row", row)

@@ -12,8 +12,9 @@
     },
     {
       "find_property_": "techs",
-      "after_a_": "table_headers",
-      "named_": ["Technologies", "Technos", "Techs", "Tools"]
+      "after_a_": "title",
+      "named_": ["Technologies", "Technos", "Techs", "Tools"],
+      "format": "array"
     },
     {
       "find_property_": "gitLink",
@@ -51,8 +52,7 @@
         "Description",
         "Description du projet"
       ],
-      "take_everything_after_": true,
-      "format": "html"
+      "take_everything_after_": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-name = "MarkdownParser"
+name = "JuliaMarkdownJoy"
 uuid = "984a7d7a-33bd-4442-88fe-fe251779b53a"
 authors = ["Eric PHILIPPE <ericphlpp@proton.me>"]
 version = "0.1.0"
