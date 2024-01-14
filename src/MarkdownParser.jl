@@ -76,7 +76,7 @@ function parse(parser::Parser) :: Dict{String, Any}
             quote_lines = [line]
             index += 1
             while index <= length(lines) && startswith(lines[index], "> ")
-                push!(quote_lines, lines[index])
+                push!(quote_lines, String(lines[index]))
                 index += 1
             end
             parse_quote(parser, quote_lines)
@@ -99,7 +99,7 @@ function parse_paragraph(parser::Parser, paragraph::String)
     add_to_json(parser, "p", paragraph)
 end
 
-function parse_quote(parser::Parser, quote_lines::Array{String,1})
+function parse_quote(parser::Parser, quote_lines::Vector{SubString{String}})
     add_to_json(parser, "quote", join(quote_lines, "\n"))
 end
 

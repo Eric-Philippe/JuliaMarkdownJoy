@@ -50,6 +50,9 @@ function html_convert(parsed_array::Vector{Any})
 end
 
 function get_paragraph_html(content::String)
+    # Return the p but also replace any ** with <strong> and * with <em>
+    content = replace(content, r"\*\*(.*?)\*\*" => "<strong>\\1</strong>")
+    content = replace(content, r"\*(.*?)\*" => "<em>\\1</em>")
     return "<p>$(content)</p>"
 end
 
