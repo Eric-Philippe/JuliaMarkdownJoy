@@ -9,7 +9,7 @@ function html_convert(parsed_array::Vector{Any})
     for parsed in parsed_array
         type = parsed["type"]
         if type == "p"
-            html_content *= get_paragraph_html(parsed["content"])
+            html_content *= get_paragraph_html(String(parsed["content"]))
         elseif startswith(type, "h")
             html_content *= get_title_html(String(parsed["type"]), String(parsed["content"]))
         elseif type == "separator"
@@ -19,9 +19,13 @@ function html_convert(parsed_array::Vector{Any})
         elseif type == "link"
             html_content *= get_link_html(String(parsed["content"][2]), String(parsed["content"][1]))
         elseif type == "quote"
-            html_content *= get_quote_html(parsed["content"])
+            html_content *= get_quote_html(String(parsed["content"]))
         elseif type == "list"
-            html_content *= get_list_html(parsed["content"])
+            string_list = []
+            for item in parsed["content"]
+                push!(string_list, String(item))
+            end            
+            html_content *= get_list_html(string_list)
         elseif type == "code_block"
             html_content *= get_code_blocks_html(String(parsed["content"][1]), String(parsed["content"][2]))
         elseif type == "table_row"
@@ -65,8 +69,13 @@ function get_quote_html(content::String)
     return "<blockquote>$(content)</blockquote>"
 end
 
-function get_list_html(content::String)
-    return "<ul>$(content)</ul>"
+function get_list_html(content::Vector{Any})
+    list_html = "<ul>"
+    for item in content
+        list_html *= "<li>$(item)</li>"
+    end
+    list_html *= "</ul>"
+    return list_html
 end
 
 function get_code_blocks_html(language::String, content::String)
