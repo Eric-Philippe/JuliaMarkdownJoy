@@ -60,12 +60,13 @@ julia --project=. src/run.jl
 
 At the moment, the CLI only supports the following commands:
 
-| Command   | Description                                                        | Status             |
-| --------- | ------------------------------------------------------------------ | ------------------ |
-| `help`    | Display the help message                                           | W.I.P              |
-| `parse`   | Parse a markdown file to an intermediate JSON representation       | ✅                 |
-| `extract` | Extract specific fields from a Markdown file to a proper JSON file | ✅                 |
-| `convert` | Convert a Markdown file to [HTML, YAML, JSON]                      | W.I.P (HTML Ready) |
+| Command           | Description                                                        | Status             |
+| ----------------- | ------------------------------------------------------------------ | ------------------ |
+| `help`            | Display the help message                                           | W.I.P              |
+| `parse`           | Parse a markdown file to an intermediate JSON representation       | ✅                 |
+| `extract`         | Extract specific fields from a Markdown file to a proper JSON file | ✅                 |
+| `test-dead-links` | Test all the links in a markdown file                              | ✅                 |
+| `convert`         | Convert a Markdown file to [HTML, YAML, JSON]                      | W.I.P (HTML Ready) |
 
 #### Parse command
 
@@ -215,6 +216,7 @@ You can put the following attributes in the config file for each field :
 
 - [x] Parse markdown file to JSON
 - [x] Extract specific fields from a Markdown file to a proper JSON file
+- [x] Test all the links in a markdown file
 - [ ] Convert a Markdown file to [HTML, YAML, JSON]
 
 ## Suggestions

@@ -11,7 +11,10 @@ import .MarkdownParser: Parser, parseFiles, parse
 include("Extractor.jl")
 import .Extractor: ExtractorManager, extract, SEARCH_FIELDS, FORMAT
 
-const MAIN_ARGUMENTS = ["extract", "parse", "convert", "help"]
+include("Tools.jl")
+import .Tools: get_dead_links
+
+const MAIN_ARGUMENTS = ["extract", "parse", "convert", "help", "test-dead-links"]
 const FLAGS = ["config", "input", "output"]
 const FLAGS_SHORT = ["c", "i", "o"]
 
@@ -30,6 +33,8 @@ function main()
         parseCLI()
     elseif ARGS[1] == "extract"
         extractCLI()
+    elseif ARGS[1] == "test-dead-links"
+        test_dead_links()
     elseif ARGS[1] == "convert"
         println("NOT_IMPLEMENTED")
     elseif ARGS[1] == "help"
@@ -71,6 +76,36 @@ function extractCLI()
     write_json_file(output, extracted_array)
     println("🎉 $(length(files)) Markdown files extracted successfully in $(output) !")
     exit(0)
+end
+
+function test_dead_links()
+    input, output = getInputOutput()
+
+    files = getFiles(input)
+    parsed_array = parseFiles(files)
+    dead_links = []
+    n = 1
+    for parsed in parsed_array
+        _dead_links = get_dead_links(parsed["_content"])
+        if length(_dead_links) > 0
+            println("🚨 $(length(_dead_links)) dead links found in $(files[n])")
+            println("Dead links:")
+            for dead_link in _dead_links
+                push!(dead_links, dead_link)
+                println("  - $dead_link")
+            end
+        end
+        n += 1
+    end
+
+    if length(dead_links) > 0
+        println("🚨 $(length(dead_links)) dead links found in $(length(files)) files")
+        exit(1)
+    else
+        println("🎉 No dead links found in $(length(files)) files")
+        exit(0)
+    end
+
 end
 
 """
