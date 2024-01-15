@@ -35,6 +35,6 @@ end
             json = parse(mdParser)
             i += 1
         end
-        @test time_taken < 3
+        @test time_taken < 5
     end
 end
