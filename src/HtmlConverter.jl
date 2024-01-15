@@ -53,6 +53,8 @@ function get_paragraph_html(content::String)
     # Return the p but also replace any ** with <strong> and * with <em>
     content = replace(content, r"\*\*(.*?)\*\*"s => s"<strong>\1</strong>")
     content = replace(content, r"\_(.*?)\_"s => s"<em>\1</em>")
+    # Replace the `` 
+    content = replace(content, r"\`(.*?)\`"s => s"<code>\1</code>")
     return "<p>$(content)</p>"
 end
 
